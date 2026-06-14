@@ -1,0 +1,62 @@
+/* ============================================
+   RESPONSIVE — Mobile First Breakpoints
+============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .features-strip { grid-template-columns: repeat(2, 1fr); }
+  .feature-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .modal-content { grid-template-columns: 1fr; }
+  .modal-img { height: 260px; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-image { display: none; }
+  .hero-text { padding: 60px 8%; text-align: center; align-items: center; }
+  .hero-desc { text-align: center; }
+  .hero-stats { flex-wrap: wrap; justify-content: center; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .features-strip { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .trust-strip { flex-direction: column; align-items: center; }
+  .trust-item { border-right: none; border-bottom: 1px solid #E8E0D5; width: 100%; justify-content: center; }
+  .section-header { flex-direction: column; align-items: flex-start; }
+  .section-controls { width: 100%; }
+  .search-inline input { width: 100%; }
+  .sort-select { width: 100%; }
+  .toast-container { bottom: 16px; right: 16px; left: 16px; }
+  .toast { max-width: 100%; }
+  .scroll-top { bottom: 16px; right: 16px; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .products-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .product-img-wrap { height: 160px; font-size: 48px; }
+  .newsletter-form { flex-direction: column; border: none; gap: 10px; }
+  .newsletter-input { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 14px 16px; }
+  .newsletter-btn { border: none; border-radius: var(--radius); padding: 14px; }
+  .hero-btns { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-outline { justify-content: center; }
+  .search-input { font-size: 22px; }
+  .product-modal { margin: 0; border-radius: 0; max-height: 100vh; }
+  .modal-info { padding: 24px 20px; }
+  .announce-bar { font-size: 10px; letter-spacing: 0.08em; }
+}
+
+/* Large screens */
+@media (min-width: 1400px) {
+  nav { padding: 0 8%; }
+  .products-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Print styles */
+@media print {
+  nav, footer, .cart-sidebar, .toast-container, .cookie-banner { display: none; }
+  body { background: white; color: black; }
+}

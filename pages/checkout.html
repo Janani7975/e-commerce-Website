@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checkout — Radha Jewels</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#fffcf7;--ink:#1a0a00;--ink2:#4a2f1a;--gold:#b8860b;--gold2:#d4a843;--gold-light:#fdf3d7;--cream:#f5e6c8;--white:#ffffff;--border:#e8d9c0;--muted:#8c6f52;--danger:#c0392b;--success:#2e7d4f;--shadow:0 4px 24px rgba(26,10,0,.08);--shadow-lg:0 12px 48px rgba(26,10,0,.15);--r:4px;--t:.3s cubic-bezier(.4,0,.2,1);--ff-display:'Playfair Display',serif;--ff-body:'Inter',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-body);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6}
+a{text-decoration:none;color:inherit}button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--ff-display);font-size:22px;font-weight:700;color:var(--ink)}
+.nav-logo span{color:var(--gold)}
+.nav-secure{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+
+.checkout-wrap{max-width:1080px;margin:0 auto;padding:48px 5%;display:grid;grid-template-columns:1fr 360px;gap:40px;}
+h1{font-family:var(--ff-display);font-size:32px;font-weight:700;margin-bottom:32px;color:var(--ink)}
+
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:28px;margin-bottom:20px}
+.form-card h3{font-family:var(--ff-display);font-size:18px;font-weight:600;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.form-group input,.form-group select{padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:14px;font-family:var(--ff-body);background:var(--white);transition:border-color var(--t)}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--gold)}
+.form-group.has-error input{border-color:var(--danger)}
+.err-msg{font-size:11px;color:var(--danger);display:none}
+.form-group.has-error .err-msg{display:block}
+
+.pay-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.pay-opt{border:1.5px solid var(--border);border-radius:var(--r);padding:14px 10px;cursor:pointer;text-align:center;font-size:13px;font-weight:500;transition:all var(--t)}
+.pay-opt:hover{border-color:var(--gold)}
+.pay-opt.active{border-color:var(--gold);background:var(--gold-light)}
+.pay-opt span{display:block;font-size:22px;margin-bottom:5px}
+
+.order-summary{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;position:sticky;top:80px;height:fit-content}
+.order-summary h3{font-family:var(--ff-display);font-size:18px;font-weight:600;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sum-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.sum-img{width:48px;height:48px;background:var(--cream);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sum-name{font-size:13px;font-weight:500;line-height:1.3}
+.sum-price{font-size:12px;color:var(--muted);margin-top:2px}
+.sum-totals{margin-top:14px}
+.sum-row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:7px}
+.sum-total{display:flex;justify-content:space-between;font-family:var(--ff-display);font-size:19px;font-weight:700;padding-top:10px;border-top:1px solid var(--border);margin-top:7px}
+.btn-place{width:100%;background:var(--gold);color:var(--white);padding:16px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;border-radius:var(--r);margin-top:18px;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-place:hover{background:var(--ink);transform:translateY(-2px);box-shadow:var(--shadow)}
+.secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--muted);margin-top:10px}
+
+/* Success */
+.success-screen{display:none;text-align:center;max-width:540px;margin:80px auto;padding:0 20px}
+.success-screen.show{display:block}
+.suc-icon{font-size:72px;margin-bottom:20px;animation:pop .5s ease}
+.suc-title{font-family:var(--ff-display);font-size:40px;font-weight:700;margin-bottom:14px}
+.suc-msg{font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:28px}
+.order-id{display:inline-block;background:var(--cream);padding:10px 24px;border-radius:var(--r);font-family:monospace;font-size:16px;font-weight:700;margin-bottom:28px}
+.btn-back{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--white);padding:14px 32px;border-radius:var(--r);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;transition:all var(--t)}
+.btn-back:hover{background:var(--ink);transform:translateY(-2px)}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+.ann-bar{background:var(--ink);color:var(--gold-light);text-align:center;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px}
+
+@media(max-width:768px){
+  .checkout-wrap{grid-template-columns:1fr}
+  .order-summary{position:static}
+  .form-row{grid-template-columns:1fr}
+  .pay-opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="ann-bar">🔒 100% Secure Checkout — SSL Encrypted</div>
+<nav>
+  <div class="nav-logo"><a href="index.html">Radha <span>Jewels</span></a></div>
+  <div class="nav-secure">🔒 Safe & Secure Checkout</div>
+</nav>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="suc-icon">🎉</div>
+  <div class="suc-title">Order Placed!</div>
+  <p class="suc-msg">Thank you for shopping with Radha Jewels! Your beautiful jewellery is on its way. You'll receive a confirmation message shortly.</p>
+  <div class="order-id" id="orderId">Order #RJ-000000</div><br/>
+  <a href="index.html" class="btn-back">← Continue Shopping</a>
+</div>
+
+<!-- CHECKOUT FORM -->
+<div class="checkout-wrap" id="checkoutWrap">
+  <div>
+    <h1>Checkout</h1>
+
+    <div class="form-card">
+      <h3>📧 Contact Details</h3>
+      <div class="form-row full"><div class="form-group" id="g-email"><label>Email Address *</label><input type="email" id="f-email" placeholder="you@example.com"/><span class="err-msg">Enter valid email</span></div></div>
+      <div class="form-row full"><div class="form-group" id="g-phone"><label>Phone Number *</label><input type="tel" id="f-phone" placeholder="+91 98765 43210"/><span class="err-msg">Enter valid phone</span></div></div>
+    </div>
+
+    <div class="form-card">
+      <h3>🚚 Delivery Address</h3>
+      <div class="form-row">
+        <div class="form-group" id="g-fn"><label>First Name *</label><input type="text" id="f-fn" placeholder="Priya"/><span class="err-msg">Required</span></div>
+        <div class="form-group" id="g-ln"><label>Last Name *</label><input type="text" id="f-ln" placeholder="Sharma"/><span class="err-msg">Required</span></div>
+      </div>
+      <div class="form-row full"><div class="form-group" id="g-addr"><label>Street Address *</label><input type="text" id="f-addr" placeholder="No. 12, Gandhi Nagar, 2nd Street"/><span class="err-msg">Required</span></div></div>
+      <div class="form-row">
+        <div class="form-group" id="g-city"><label>City *</label><input type="text" id="f-city" placeholder="Chennai"/><span class="err-msg">Required</span></div>
+        <div class="form-group" id="g-pin"><label>Pincode *</label><input type="text" id="f-pin" placeholder="600001" maxlength="6"/><span class="err-msg">Enter 6-digit pincode</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>State</label>
+          <select id="f-state"><option>Tamil Nadu</option><option>Karnataka</option><option>Maharashtra</option><option>Andhra Pradesh</option><option>Telangana</option><option>Kerala</option><option>Delhi</option><option>West Bengal</option><option>Gujarat</option><option>Rajasthan</option></select>
+        </div>
+        <div class="form-group"><label>Country</label>
+          <select id="f-country"><option>India</option><option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option><option>Singapore</option><option>UAE</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3>💳 Payment Method</h3>
+      <div class="pay-opts">
+        <div class="pay-opt active" onclick="selPay('card',this)"><span>💳</span>Card</div>
+        <div class="pay-opt" onclick="selPay('upi',this)"><span>📱</span>UPI</div>
+        <div class="pay-opt" onclick="selPay('cod',this)"><span>💵</span>Cash on Delivery</div>
+      </div>
+
+      <div id="card-sec">
+        <div class="form-row full"><div class="form-group" id="g-card"><label>Card Number *</label><input type="text" id="f-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/><span class="err-msg">Enter valid 16-digit number</span></div></div>
+        <div class="form-row">
+          <div class="form-group" id="g-exp"><label>Expiry *</label><input type="text" id="f-exp" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"/><span class="err-msg">Enter valid expiry</span></div>
+          <div class="form-group" id="g-cvv"><label>CVV *</label><input type="password" id="f-cvv" placeholder="•••" maxlength="3"/><span class="err-msg">Enter 3-digit CVV</span></div>
+        </div>
+      </div>
+      <div id="upi-sec" style="display:none">
+        <div class="form-row full"><div class="form-group" id="g-upi"><label>UPI ID *</label><input type="text" id="f-upi" placeholder="yourname@upi"/><span class="err-msg">Enter valid UPI ID</span></div></div>
+      </div>
+      <div id="cod-sec" style="display:none">
+        <p style="background:var(--cream);padding:14px;border-radius:var(--r);font-size:13px;color:var(--muted)">💵 Pay with cash when your order arrives. An additional ₹40 handling fee applies for COD orders under ₹499.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <h3>Order Summary</h3>
+    <div id="sumItems"></div>
+    <div class="sum-totals">
+      <div class="sum-row"><span>Subtotal</span><span id="sumSub">₹0</span></div>
+      <div class="sum-row"><span>Shipping</span><span id="sumShip">Free</span></div>
+      <div class="sum-total"><span>Total</span><span id="sumTot">₹0</span></div>
+    </div>
+    <button class="btn-place" onclick="placeOrder()">🔒 Place Order</button>
+    <div class="secure-note">🔒 SSL Secured &nbsp;|&nbsp; 🛡️ Buyer Protected</div>
+  </div>
+</div>
+
+<script>
+let cart=JSON.parse(localStorage.getItem('rj-cart')||'[]');
+let payMethod='card';
+
+function renderSummary(){
+  const el=document.getElementById('sumItems');if(!el)return;
+  if(!cart.length){el.innerHTML='<p style="font-size:13px;color:#8c6f52;padding:16px 0">No items in cart</p>';return;}
+  el.innerHTML=cart.map(c=>`<div class="sum-item"><div class="sum-img">${c.emoji}</div><div><div class="sum-name">${c.name}</div><div class="sum-price">×${c.qty} — ₹${(c.price*c.qty).toLocaleString()}</div></div></div>`).join('');
+  const sub=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const ship=sub>=499?0:60;
+  document.getElementById('sumSub').textContent=`₹${sub.toLocaleString()}`;
+  document.getElementById('sumShip').textContent=ship===0?'🎉 Free':`₹${ship}`;
+  document.getElementById('sumTot').textContent=`₹${(sub+ship).toLocaleString()}`;
+}
+
+function selPay(m,el){
+  payMethod=m;
+  document.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('active'));el.classList.add('active');
+  document.getElementById('card-sec').style.display=m==='card'?'block':'none';
+  document.getElementById('upi-sec').style.display=m==='upi'?'block':'none';
+  document.getElementById('cod-sec').style.display=m==='cod'?'block':'none';
+}
+
+function fmtCard(inp){let v=inp.value.replace(/\D/g,'').substring(0,16);inp.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtExp(inp){let v=inp.value.replace(/\D/g,'');if(v.length>=2) v=v.substring(0,2)+'/'+v.substring(2,4);inp.value=v;}
+
+function setErr(grp,show){const el=document.getElementById(grp);if(el) el.classList.toggle('has-error',show);}
+
+function validate(){
+  let ok=true;
+  const chks=[
+    {id:'f-email',grp:'g-email',fn:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+    {id:'f-phone',grp:'g-phone',fn:v=>v.replace(/\D/g,'').length>=10},
+    {id:'f-fn',grp:'g-fn',fn:v=>v.length>0},
+    {id:'f-ln',grp:'g-ln',fn:v=>v.length>0},
+    {id:'f-addr',grp:'g-addr',fn:v=>v.length>5},
+    {id:'f-city',grp:'g-city',fn:v=>v.length>0},
+    {id:'f-pin',grp:'g-pin',fn:v=>/^\d{6}$/.test(v)},
+  ];
+  if(payMethod==='card'){
+    chks.push({id:'f-card',grp:'g-card',fn:v=>v.replace(/\s/g,'').length===16});
+    chks.push({id:'f-exp',grp:'g-exp',fn:v=>/^\d{2}\/\d{2}$/.test(v)});
+    chks.push({id:'f-cvv',grp:'g-cvv',fn:v=>/^\d{3}$/.test(v)});
+  }
+  if(payMethod==='upi') chks.push({id:'f-upi',grp:'g-upi',fn:v=>v.includes('@')});
+  chks.forEach(({id,grp,fn})=>{
+    const el=document.getElementById(id);if(!el)return;
+    const valid=fn(el.value.trim());setErr(grp,!valid);if(!valid) ok=false;
+  });
+  return ok;
+}
+
+function placeOrder(){
+  if(!cart.length){alert('Your cart is empty! Please add items before checkout.');window.location.href='index.html';return;}
+  if(!validate()){const fe=document.querySelector('.has-error input');if(fe) fe.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  const oid='RJ-'+Math.random().toString(36).substring(2,8).toUpperCase();
+  localStorage.setItem('rj-cart','[]');
+  document.getElementById('checkoutWrap').style.display='none';
+  const s=document.getElementById('successScreen');s.classList.add('show');
+  document.getElementById('orderId').textContent=`Order #${oid}`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderSummary();
+</script>
+</body>
+</html>
