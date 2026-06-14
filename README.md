@@ -25,3 +25,13 @@ A complete, responsive jewellery e-commerce website built with pure HTML, CSS, a
 - Vanilla JavaScript (No frameworks)
 
 ## 📁 Project Structure
+jewels-store/
+
+├── index.html       # Main homepage
+
+└── checkout.html    # Checkout page
+
+## 👩‍💻 Developer
+**Janani G** 
+- GitHub: github.com/Janani7975
+- LinkedIn: linkedin.com/in/jananig474
